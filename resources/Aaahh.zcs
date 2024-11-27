@@ -1,0 +1,15 @@
+{
+    "name": "Aaahh!!",
+    "quantite": 4,
+    "legendaire": 0,
+    "dual": 0,
+    "emplacement": 3,
+    "ouvre_porte": "0",
+    "ouvre_porte_bruyant": 0,
+    "bruyante": 0,
+    "portee": "0",
+    "des": 0,
+    "precision": 0,
+    "degats": 0,
+    "description": "What you thought was a pile of rags is in fact a zombie. Place one walker in the room you just searched."
+}

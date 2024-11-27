@@ -1,0 +1,15 @@
+{
+    "name": "Long Bow",
+    "quantite": 2,
+    "legendaire": 0,
+    "dual": 0,
+    "emplacement": 0,
+    "ouvre_porte": "0",
+    "ouvre_porte_bruyant": 0,
+    "bruyante": 0,
+    "portee": "1-3",
+    "des": 1,
+    "precision": "3+",
+    "degats": 1,
+    "description": "ARROWS."
+}

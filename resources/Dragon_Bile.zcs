@@ -1,0 +1,15 @@
+{
+    "name": "Dragon Bile",
+    "quantite": 4,
+    "legendaire": 0,
+    "dual": 0,
+    "emplacement": 0,
+    "ouvre_porte": "0",
+    "ouvre_porte_bruyant": 0,
+    "bruyante": 0,
+    "portee": "0-1",
+    "des": 0,
+    "precision": 0,
+    "degats": 0,
+    "description": "Spend an Action and discard Dragon Bile from Hand. Put a Dragon Bile token at Range 0-1."
+}

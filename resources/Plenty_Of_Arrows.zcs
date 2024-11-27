@@ -1,0 +1,15 @@
+{
+    "name": "Plenty Of Arrows",
+    "quantite": 3,
+    "legendaire": 0,
+    "dual": 0,
+    "emplacement": 2,
+    "ouvre_porte": "0",
+    "ouvre_porte_bruyant": 0,
+    "bruyante": 0,
+    "portee": "0",
+    "des": 0,
+    "precision": 0,
+    "degats": 0,
+    "description": "You may re-roll all Ranged Attacks once with weapons with the Arrows keyword. The new result takes the place of the previous one."
+}

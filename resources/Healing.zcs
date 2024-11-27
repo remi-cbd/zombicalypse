@@ -1,0 +1,15 @@
+{
+    "name": "Healing",
+    "quantite": 1,
+    "legendaire": 0,
+    "dual": 0,
+    "emplacement": 0,
+    "ouvre_porte": "0",
+    "ouvre_porte_bruyant": 0,
+    "bruyante": 1,
+    "portee": 999,
+    "des": 0,
+    "precision": 0,
+    "degats": 0,
+    "description": "ENCHANTMENT. Once per Turn. The targeted Survivor recovers 1 Wound (up to his starting total). Healing can't be used to resurrect a Survivor."
+}

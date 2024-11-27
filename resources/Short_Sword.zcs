@@ -1,0 +1,15 @@
+{
+    "name": "Short Sword",
+    "quantite": 4,
+    "legendaire": 0,
+    "dual": 1,
+    "emplacement": 0,
+    "ouvre_porte": "4+",
+    "ouvre_porte_bruyant": 1,
+    "bruyante": 0,
+    "portee": "0",
+    "des": 1,
+    "precision": "4+",
+    "degats": 1,
+    "description": ""
+}

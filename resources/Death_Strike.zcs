@@ -1,0 +1,15 @@
+{
+    "name": "Death Strike",
+    "quantite": 2,
+    "legendaire": 0,
+    "dual": 1,
+    "emplacement": 0,
+    "ouvre_porte": "0",
+    "ouvre_porte_bruyant": 0,
+    "bruyante": 1,
+    "portee": "0-1",
+    "des": 1,
+    "precision": "4+",
+    "degats": 2,
+    "description": "COMBAT SPELL."
+}

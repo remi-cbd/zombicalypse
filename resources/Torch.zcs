@@ -1,0 +1,15 @@
+{
+    "name": "Torch",
+    "quantite": 4,
+    "legendaire": 0,
+    "dual": 0,
+    "emplacement": 0,
+    "ouvre_porte": "0",
+    "ouvre_porte_bruyant": 0,
+    "bruyante": 0,
+    "portee": "0",
+    "des": 0,
+    "precision": 0,
+    "degats": 0,
+    "description": "Draw two cards when Searching. Spend an Action, discard the Torch from Hand and select a Dragon Bile token at Range 0-1: Resolve a Dragon Fire."
+}

@@ -1,0 +1,15 @@
+{
+    "name": "Repulse",
+    "quantite": 1,
+    "legendaire": 0,
+    "dual": 0,
+    "emplacement": 0,
+    "ouvre_porte": "0",
+    "ouvre_porte_bruyant": 0,
+    "bruyante": 1,
+    "portee": "0",
+    "des": 0,
+    "precision": 0,
+    "degats": 0,
+    "description": "Once per Turn. Select q tqrget Zone the Survivor can see, then a destination Zone at Range 1 from it, sharing an open path, and 1 Zone farther from the Survivor. Zombies standing in the target Zone are pushed to the destination Zone."
+}
