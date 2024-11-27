@@ -21,3 +21,23 @@ export function App() {
 }
 
 render(<App />, document.getElementById('app'));
+
+
+/*
+const socket = new WebSocket('ws://localhost:8080');
+
+socket.onopen = function() {
+    console.log('Connected to server');
+    // Send a message to the server
+    socket.send(JSON.stringify({ message: 'Hello, Server!' }));
+};
+
+socket.onmessage = function(event) {
+    const data = JSON.parse(event.data);
+    console.log('Received from server:', data);
+};
+
+socket.onclose = function() {
+    console.log('Disconnected from server');
+};
+*/
