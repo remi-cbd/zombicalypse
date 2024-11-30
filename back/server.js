@@ -1,63 +1,59 @@
-const WebSocket = require('ws'); // Import the WebSocket library
+// modules
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import { v4 as uuidv4 } from 'uuid';
+// files
+import db from './db.js'
+import wss from './websocket.js'
+import lobby from './routes/lobby.js';
 
-const wss = new WebSocket.Server({ port: 8080 });  // Set up WebSocket server on port 8080
+const app = express()
 
-// Array to store connected clients (up to 6 clients)
-let clients = [];
+const hostname = 'localhost'
+const port = 3000
 
-wss.on('connection', (ws) => {
-    console.log('A new client connected!');
-    
-    // Handle client connection (OnConnect)
-    OnConnect(ws);
+app.use(cors());
 
-    // Handle incoming messages from clients
-    ws.on('message', (msg) => {
-        console.log('Received message from client:', msg);
-        // Broadcast the message to all connected clients
-        broadcast(msg);
-    });
+app.use(bodyParser.json())
+app.use(
+    bodyParser.urlencoded({
+        extended: true,
+    })
+)
 
-    // When the client disconnects
-    ws.on('close', () => {
-        console.log('A client disconnected!');
-        // Remove the client from the clients array
-        clients = clients.filter(client => client !== ws);
-    });
-
-    // Send a welcome message to the new client
-    ws.send(JSON.stringify({ message: 'Welcome to the server!' }));
-});
-
-// OnConnect - Called when a new client connects
-function OnConnect(client) {
-    // Push the new client to the clients array (up to 6 clients)
-    if (clients.length < 6) {
-        clients.push(client);
-        console.log(`Client connected. Total clients: ${clients.length}`);
-    } else {
-        // If there are already 6 clients, send an error message and close the connection
-        client.send(JSON.stringify({ error: 'Max client limit reached. Please try again later.' }));
-        client.close();
+app.get('/connect', async (req, res) => {
+    var data = await db.getData("/clients");
+    if (data.clients.length >= 6) {
+        res.status(401).send("Max clients reached");
+        return;
     }
-}
+    let uuid = uuidv4();
+    let clientIP = req.socket.remoteAddress;
 
-// Broadcast function to send messages to all connected clients
-function broadcast(message) {
-    clients.forEach(client => {
-        if (client.readyState === WebSocket.OPEN) {
-            client.send(JSON.stringify({ message }));
-        }
-    });
-}
+    await db.push("/clients", {
+        clients: [
+            {
+                userID: uuid,
+                clientIP: clientIP,
+                status: 'pending',
+                ws: null,
+            },
+        ],
+    }, false);
+    data = await db.getData("/clients");
+    console.log(`HTTP-| Client pending: ${clientIP} : ${uuid}`);
+    res.send(uuid);
+})
 
-// Example of broadcasting real-time events to all clients
-setInterval(() => {
-    // Broadcasting an event to all clients every 5 seconds
-    const eventMessage = {
-        type: 'event',
-        timestamp: new Date().toISOString(),
-        content: 'This is a real-time broadcast event!'
-    };
-    broadcast(eventMessage);
-}, 5000);
+app.use('/lobby', lobby);
+
+// error handling
+app.use((err, req, res, next) => {
+    console.error(err.stack)
+    res.status(500).send('Something broke!')
+})
+
+app.listen(port, hostname, () => {
+    console.log(`Http server : http://${hostname}:${port}`)
+})
