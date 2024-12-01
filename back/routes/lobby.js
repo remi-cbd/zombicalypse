@@ -4,7 +4,6 @@ var db = new JsonDB(new Config("myDataBase", true, false, '/'));
 import express from 'express';
 const router = express.Router()
 
-
 // hostname: 'localhost',
 // port: 3000,
 // path: '/selectCharacter',

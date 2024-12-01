@@ -22,6 +22,11 @@ app.use(
     })
 )
 
+app.get('/players', async (req, res) => {
+    var data = await db.getData("/clients");
+    res.send(data);
+})
+
 app.get('/connect', async (req, res) => {
     var data = await db.getData("/clients");
     if (data.clients.length >= 6) {
@@ -43,7 +48,7 @@ app.get('/connect', async (req, res) => {
     }, false);
     data = await db.getData("/clients");
     console.log(`HTTP-| Client pending: ${clientIP} : ${uuid}`);
-    res.send(uuid);
+    res.send({userID: uuid});
 })
 
 app.use('/lobby', lobby);

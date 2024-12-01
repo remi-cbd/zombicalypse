@@ -17,13 +17,13 @@ const gamePhase = {
 function App() {
   const [wsConnection, setWsConnection] = useState(null);
   const [currentPhase, setCurrentPhase] = useState('connect');
-  const [userId, setUserId] = useState('');
+  const [userID, setUserID] = useState('');
 
   const sendRequest = (request, callback) => {
     const req = http.request(request, (res) => {
       let data = '';
       res.on('data', (chunk) => { data += chunk; });
-      res.on('end', () => { callback(res.statusCode, data); });
+      res.on('end', () => { callback(res.statusCode, JSON.parse(data)); });
     });
     req.on('error', (error) => {
       console.error(`Request failed: ${error.message}`);
@@ -65,8 +65,8 @@ function App() {
           setWsConnection={setWsConnection}
           currentPhase={currentPhase}
           setCurrentPhase={setCurrentPhase}
-          userId={userId}
-          setUserId={setUserId}
+          userID={userID}
+          setUserID={setUserID}
           sendRequest={sendRequest}
         />
       </div>
