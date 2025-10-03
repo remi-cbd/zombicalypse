@@ -1,7 +1,5 @@
-import { JsonDB, Config } from 'node-json-db';
-var db = new JsonDB(new Config("myDataBase", true, false, '/'));
-
 import express from 'express';
+
 const router = express.Router()
 
 // hostname: 'localhost',

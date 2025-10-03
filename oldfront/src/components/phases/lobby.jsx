@@ -1,8 +1,16 @@
 import { useState } from 'preact/hooks';
+import useWebSocket from '../../hooks/websocket';
+import wsComponent from '../websocket'
+import '../../styles/lobby.css'
 
-import '../styles/lobby.css'
+// interface LobbyComponentProps {
+	
+// }
 
 const LobbyComponent = (props) => {
+
+	const { socket, messages, status, sendMessage } = useWebSocket(`ws://localhost:3000/ws?uuid=${props.userID}`);
+
 	const sendReady = () => {
 		const request = {
 			hostname: 'localhost',
@@ -43,24 +51,26 @@ const LobbyComponent = (props) => {
 		setSelected(newSelected);
 	};
 
-	const [players, setPlayers] = useState(null);
-	const request = {
-		hostname: 'localhost',
-		port: 3000,
-		path: '/players',
-		method: 'GET',
-		body: JSON.stringify({
-			userID: props.userID
-		})
-	}
-	props.sendRequest(request, (status, data) => {
-		if (status === 200) {
-			setPlayers(data.clients);
-		}
-	})
+	const [players, setPlayers] = useState([]);
+	// const request = {
+	// 	hostname: 'localhost',
+	// 	port: 3000,
+	// 	path: '/players',
+	// 	method: 'GET',
+	// 	body: JSON.stringify({
+	// 		userID: props.userID
+	// 	})
+	// }
+	// props.sendRequest(request, (status, data) => {
+	// 	if (status === 200) {
+	// 		setPlayers(data.clients);
+	// 	}
+	// })
 
 	return (
 		<div>
+			{wsComponent(props.userID)}
+
 			{/* Main container for list and grid */}
 			<div className="playerlistcontainer">
 				{/* Fixed column for player names */}
