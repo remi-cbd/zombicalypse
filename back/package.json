@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/server.js"
   },
   "keywords": [],
   "type": "module",
@@ -15,6 +15,7 @@
     "cors": "^2.8.5",
     "express": "^4.21.1",
     "express-ws": "^5.0.2",
+    "jsonwebtoken": "^9.0.2",
     "node-json-db": "^2.3.0",
     "uuid": "^11.0.3",
     "ws": "^8.18.0"

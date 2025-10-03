@@ -2,8 +2,10 @@ import express from 'express'
 import expressWs from 'express-ws'
 import bodyParser from 'body-parser'
 import cors from 'cors'
-import lobby from './routes/lobby.js'
-import index from './routes/index.js'
+import isAuthenticated from './middleware/auth.js'
+// import lobby from './routes/lobby.js'
+// import index from './routes/index.js'
+import auth from './routes/auth.js'
 import * as whatever from './websocket.js'
 
 // Secrets
@@ -20,13 +22,15 @@ const wsRouter = await import('./routes/websocket.js')
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(isAuthenticated)
 
 // HTTP Routes
-app.use('/', index)
-app.use('/lobby', lobby)
+// app.use('/', index)
+// app.use('/lobby', lobby)
+app.use('/auth', auth)
 
 // WS Routes
-app.ws('/ws', wsRouter)
+// app.ws('/ws', wsRouter)
 
 // Error handling
 app.use((err, req, res, next) => {
