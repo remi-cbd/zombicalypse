@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Frijole&family=Nosifer&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import "tailwindcss";
+
+:root {
+  font-family: "Nosifer"
+}
+
+h1, h2, h3, h4, H5, h6 {
+  font-family: "Frijole";
+}
