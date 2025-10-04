@@ -1,0 +1,36 @@
+services:
+  db:
+    image: postgres
+    env_file: .env
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    # restart: on-failure
+    networks:
+      - postgres
+
+  back:
+    build: ./back/
+    ports:
+      - 3000:3000
+    env_file: .env
+    networks:
+      - postgres
+    depends_on:
+      db:
+        condition: service_started
+
+  front:
+    build: ./front/
+    ports:
+      - 80:80
+    env_file: .env
+    depends_on:
+      db:
+        condition: service_started
+
+volumes:
+  postgres:
+
+networks:
+  postgres:

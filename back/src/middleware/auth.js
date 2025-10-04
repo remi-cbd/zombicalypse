@@ -6,16 +6,14 @@ const isAuthenticated = (req, res, next) => {
 	]
 
 	try {
-		// Whitelist check
 		if (WHITELIST.includes(req.url))
 			return next()
 
-		// Signature check
-		jwt.verify(req.header.token, 'shhhhh')
-		return next()
+		jwt.verify(req.header.token, process.env.BACK_AUTH_SECRET)
 
+		return next()
 	} catch(err) {
-		return res.status(401).send('Fuck you')
+		return res.status(401).send()
 	}
 }
 
