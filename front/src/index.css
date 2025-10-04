@@ -8,3 +8,14 @@
 h1, h2, h3, h4, H5, h6 {
   font-family: "Frijole";
 }
+
+@theme {
+  --color-primary: #991b1b;
+  --color-primary-hover: #B02020;
+
+  --color-secondary: #373d20;
+  --color-secondary-hover: #4F5535;
+
+  --color-tertiary: #ddB967;
+  --color-tertiary-hover: #4F5535;
+}
