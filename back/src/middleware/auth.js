@@ -1,8 +1,10 @@
+import jwt from 'jsonwebtoken';
 
 const isAuthenticated = (req, res, next) => {
 	const WHITELIST = [
 		"/auth/login",
 		"/auth/register",
+		"/auth/request-password-reset"
 	]
 
 	try {

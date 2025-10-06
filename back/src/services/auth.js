@@ -7,13 +7,13 @@ const login = async (req, res) => {
 
 	const user = await db.getUserByEmail(email)
 	if (!user)
-		return res.status(400).send('unknown user')
+		return res.status(401).send()
 
 	const [salt, key] = user.password.split(':')
 	const hashedBuffer = scryptSync(password, salt, 64)
 	const keyBuffer = Buffer.from(key, 'hex')
 	if (!timingSafeEqual(hashedBuffer, keyBuffer))
-		return res.status(401).send('login failed')
+		return res.status(401).send()
 
 	const token = jwt.sign({ foo: 'bar' }, process.env.BACK_AUTH_SECRET)
 
@@ -25,7 +25,7 @@ const register = async (req, res) => {
 
 	const user = await db.getUserByEmail(email)
 	if (user)
-		return res.status(400).send('email already used')
+		return res.status(409).send()
 
 	const salt = randomBytes(16).toString('hex')
 	const hashedPassword = scryptSync(password, salt, 64).toString('hex')
@@ -41,7 +41,7 @@ const resetPassword = async (req, res) => {
 
 	const user = await db.getUserByEmail(email)
 	if (!user)
-		return res.status(400).send('unknown user')
+		return res.status(401).send()
 
 	const token = randomBytes(16).toString('hex')
 
@@ -69,7 +69,7 @@ const resetPassword = async (req, res) => {
 			console.error('EmailJS error:', errorData)
 			return res.status(500).send('Failed to send email')
 		}
-		return res.status(200).send('Reset email sent successfully')
+		return res.status(200).send()
 	} catch (err) {
 		console.error('Error sending email:', err)
 		return res.status(500).send('Server error')
