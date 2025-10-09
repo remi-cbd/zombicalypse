@@ -19,6 +19,7 @@ CREATE SCHEMA IF NOT EXISTS "zombicide";
 -- Dumping structure for table zombicide.users
 CREATE TABLE zombicide.users (
 	"id" SERIAL PRIMARY KEY,
+	"uuid" VARCHAR(40) NOT NULL,
 	"name" VARCHAR(80) NOT NULL,
 	"email" VARCHAR NOT NULL,
 	"password" VARCHAR NOT NULL,
