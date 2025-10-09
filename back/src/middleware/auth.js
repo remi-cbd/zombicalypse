@@ -11,7 +11,8 @@ const isAuthenticated = (req, res, next) => {
 		if (WHITELIST.includes(req.url))
 			return next()
 
-		jwt.verify(req.header.token, process.env.BACK_AUTH_SECRET)
+		const decoded = jwt.verify(req.header.token, process.env.BACK_AUTH_SECRET)
+		req.user = { uuid: decoded.uuid }
 
 		return next()
 	} catch(err) {

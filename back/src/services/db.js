@@ -11,9 +11,9 @@ const pool = new pg.Pool({
 	connectionTimeoutMillis: 0,
 })
 
-const addUser = async (name, email, password) => {
+const addUser = async (uuid, name, email, password) => {
 	return pool
-		.query('INSERT INTO zombicide.users (name, email, password, registration_date) VALUES ($1, $2, $3, now()) RETURNING *', [name, email, password])
+		.query('INSERT INTO zombicide.users (uuid, name, email, password, registration_date) VALUES ($1, $2, $3, $4, now()) RETURNING name, email, avatar', [uuid, name, email, password])
 		.then((result) => {
 			return result.rows[0]
 		})
@@ -37,7 +37,37 @@ const getUserByEmail = async (email) => {
 
 const resetPasswordToken = async (id, token) => {
 	return pool
-		.query(`UPDATE zombicide.users SET password_reset_token = $1, password_reset_token_expiration = NOW() + INTERVAL '1 hour' WHERE id = $2 RETURNING *`, [token, id])
+		.query(`UPDATE zombicide.users SET password_reset_token = $1, password_reset_token_expiration = NOW() + INTERVAL '1 hour' WHERE id = $2`, [token, id])
+		.then((result) => {
+			return result.rows[0]
+		})
+		.catch((error) => {
+			console.error('Database query error:', error)
+			return null
+		})
+}
+
+const updateUserProfile = async (uuid, { name, avatar }) => {
+	const updates = [];
+	const values = [];
+	let paramIndex = 1;
+
+	if (name !== undefined) {
+		updates.push(`name = $${paramIndex++}`);
+		values.push(name);
+	}
+	if (avatar !== undefined) {
+		updates.push(`avatar = $${paramIndex++}`);
+		values.push(avatar);
+	}
+
+	if (updates.length === 0)
+		return null;
+
+	values.push(uuid)
+
+	return pool
+		.query(`UPDATE zombicide.users SET ${updates.join(', ')} WHERE uuid = $${paramIndex} RETURNING name, email, avatar`, values)
 		.then((result) => {
 			return result.rows[0]
 		})
@@ -50,5 +80,6 @@ const resetPasswordToken = async (id, token) => {
 export {
 	addUser,
 	getUserByEmail,
-	resetPasswordToken
+	resetPasswordToken,
+	updateUserProfile,
 }

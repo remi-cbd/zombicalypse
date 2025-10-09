@@ -3,16 +3,16 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import isAuthenticated from './middleware/auth.js'
+import errorHandler from './middleware/errorHandler.js'
 import auth from './routes/auth.js'
+import profile from './routes/profile.js'
 // import * as websocket from './services/websocket.js'
 
 const hostname = process.env.BACK_HOST
 const port = process.env.BACK_PORT
 
-// HTTP Server
+// Server
 const app = express()
-
-// WS Server
 // const wsInstance = expressWs(app)
 // websocket.initialize(wsInstance.getWss())
 // const wsRouter = await import('./routes/websocket.js')
@@ -23,19 +23,15 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(isAuthenticated)
 
-// HTTP Routes
+// Routes
 app.use('/auth', auth)
-
-// WS Routes
+app.use('/profile', profile)
 // app.ws('/ws', wsRouter)
 
-// Error handling
-app.use((err, req, res, next) => {
-    console.error(err.stack)
-    res.status(500).send('Something broke!')
-})
+// Middleware
+app.use(errorHandler)
 
-// Listen
+// Start
 app.listen(port, hostname, () => {
     console.log(`Http server : http://${hostname}:${port}`)
     // console.log(`WS server : ws://${hostname}:${port}`)

@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { v4 as uuidv4 } from 'uuid';
 import { scryptSync, randomBytes, timingSafeEqual } from 'node:crypto'
 import * as db from '../services/db.js'
 
@@ -15,9 +16,9 @@ const login = async (req, res) => {
 	if (!timingSafeEqual(hashedBuffer, keyBuffer))
 		return res.status(401).send()
 
-	const token = jwt.sign({ foo: 'bar' }, process.env.BACK_AUTH_SECRET)
+	const token = jwt.sign({ uuid: user.uuid }, process.env.BACK_AUTH_SECRET)
 
-	return res.status(200).json({ uid: user.uid, token })
+	return res.status(200).json({ uuid: user.uuid, token })
 }
 
 const register = async (req, res) => {
@@ -27,11 +28,13 @@ const register = async (req, res) => {
 	if (user)
 		return res.status(409).send()
 
+	const uuid = uuidv4()
+
 	const salt = randomBytes(16).toString('hex')
 	const hashedPassword = scryptSync(password, salt, 64).toString('hex')
 	const dbPassword = `${salt}:${hashedPassword}`
 
-	db.addUser(name, email, dbPassword)
+	db.addUser(uuid, name, email, dbPassword)
 
 	return res.status(201).send()
 }
@@ -67,12 +70,12 @@ const resetPassword = async (req, res) => {
 		if (!response.ok) {
 			const errorData = await response.text()
 			console.error('EmailJS error:', errorData)
-			return res.status(500).send('Failed to send email')
+			return res.status(500).json({ error: 'Failed to send email' })
 		}
 		return res.status(200).send()
 	} catch (err) {
 		console.error('Error sending email:', err)
-		return res.status(500).send('Server error')
+		return res.status(500).send()
 	}
 }
 

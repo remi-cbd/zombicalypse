@@ -1,7 +1,7 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
 -- Server version:               PostgreSQL 16.0 (Ubuntu 16.0-1.pgdg22.04+1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, 64-bit
--- Server OS:                    
+-- Server OS:
 -- HeidiSQL Version:             12.5.0.6677
 -- --------------------------------------------------------
 
@@ -24,6 +24,7 @@ CREATE TABLE zombicide.users (
 	"email" VARCHAR NOT NULL,
 	"password" VARCHAR NOT NULL,
 	"registration_date" TIMESTAMP WITH TIME ZONE NOT NULL,
+	"avatar" VARCHAR,
 	"password_reset_token" VARCHAR,
 	"password_reset_token_expiration" TIMESTAMP WITH TIME ZONE
 );

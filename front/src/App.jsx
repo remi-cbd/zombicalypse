@@ -1,14 +1,11 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { XMarkIcon} from "@heroicons/react/24/outline"
-
+import { Toaster } from 'react-hot-toast';
+import { XMarkIcon } from "@heroicons/react/24/outline"
 import Header from './components/Header'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
-
 import { UserProvider, useUser } from './contexts/UserContext.jsx'
-
 import './index.css'
-
 
 const ProtectedRoute = ({ user, children }) => {
 	if (!user || !user.isLoggedIn)
@@ -17,7 +14,6 @@ const ProtectedRoute = ({ user, children }) => {
 }
 
 function App() {
-
 	const user = useUser()
 
 	if (window.innerWidth < 1024) {
@@ -44,6 +40,7 @@ function App() {
 						} />
 					</Routes>
 				</main>
+				<Toaster position="top-center" reverseOrder={false} />
 			</div>
 		</UserProvider>
 	)
