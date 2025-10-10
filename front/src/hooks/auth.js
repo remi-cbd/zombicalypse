@@ -10,23 +10,27 @@ const authenticate = async (e, isLogin) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(e),
-    });
+    })
 
     if (!response.ok) {
       return {
         success: false,
         error: isLogin ?
-          'Login failed' :
-          'Register failed',
-      };
+          'login_fail_toast' :
+          'register_fail_toast',
+      }
     }
 
-    const data = isLogin ? await response.json() : null;
+    const data = isLogin ? await response.json() : null
+    return isLogin ?
+      { success: true, token: data.token, authUser: data.user } :
+      { success: true }
 
-    return { success: true, token: data.token, authUser: data.user };
   } catch (error) {
-    return { success: false, error };
-    // error: 'Network error or invalid response',
+    return {
+      success: false,
+      error: 'invalid_response'
+    }
   }
 }
 

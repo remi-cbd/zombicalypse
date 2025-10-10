@@ -1,53 +1,55 @@
-import { useState } from "react"
-import { useForm } from "react-hook-form"
-import { useNavigate } from "react-router-dom"
-import { toast } from 'react-hot-toast';
-import Cookies from 'js-cookie';
-import Input from "../components/Input"
-import Button from "../components/Button"
-import { useUser } from "../contexts/UserContext"
-import { authenticate } from "../hooks/auth"
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-hot-toast'
+import Cookies from 'js-cookie'
+import Input from '../components/Input'
+import Button from '../components/Button'
+import { useUser } from '../contexts/UserContext'
+import { authenticate } from '../hooks/auth'
 
 const LoginPage = () => {
-  const navigate = useNavigate();
-  const { reset, register, handleSubmit } = useForm();
-  const { setUserData } = useUser();
-  const [loading, setLoading] = useState(false);
-  const [wantsToLogin, setWantsToLogin] = useState(true);
+  const navigate = useNavigate()
+  const { reset, register, handleSubmit } = useForm()
+  const { t } = useTranslation()
+  const { setUserData } = useUser()
+  const [loading, setLoading] = useState(false)
+  const [wantsToLogin, setWantsToLogin] = useState(true)
 
   const onSubmit = async (formData) => {
-    setLoading(true);
-    const result = await authenticate(formData, wantsToLogin);
+    setLoading(true)
+    const result = await authenticate(formData, wantsToLogin)
 
     if (!result.success)
-      return authFailed(result.error);
+      return authFailed(result.error)
 
     return wantsToLogin ?
         loginSuccess(result.token, result.authUser) :
-        registerSuccess();
+        registerSuccess()
   }
 
   const authFailed = (error) => {
-    toast.error(error);
-    setLoading(false);
+    toast.error(t(error))
+    setLoading(false)
   }
 
   const loginSuccess = (token, authUser) => {
-    toast.success('Login successful! 🎉');
+    toast.success(t('login_success_toast'))
     Cookies.set('authToken', token, {
       expires: 7,
       /* secure: true, */
       sameSite: 'strict',
-    });
+    })
     setUserData(authUser)
     navigate('/home')
   }
 
   const registerSuccess = () => {
-    toast.success('User created successfully! 🎉');
-    reset();
-    setLoading(false);
-    setWantsToLogin(true);
+    toast.success(t('register_success_toast'))
+    reset()
+    setLoading(false)
+    setWantsToLogin(true)
   }
 
   return (
@@ -66,24 +68,24 @@ const LoginPage = () => {
         </h1>
         {wantsToLogin ?
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-lg max-w-[40%] py-12 px-4 bg-primary rounded-xl shadow-xl">
-            <h1 className="text-3xl font-bold mb-4 ">Me connecter</h1>
-            <Input label="Adresse email" type="email" placeholder="john.doe@example.com" required {...register("email")} />
-            <Input label="Mot de passe" type="password" placeholder="password" required {...register("password")} />
+            <h1 className="text-3xl font-bold mb-4 ">{t('login')}</h1>
+            <Input label={t('email')} type="email" placeholder="john.doe@example.com" required {...register("email")} />
+            <Input label={t('password')} type="password" placeholder="password" required {...register("password")} />
             <div className="flex flex-col">
-              <Button type="submit" disabled={loading}>{loading ? 'Connexion...' : 'Me connecter'}</Button>
-              <button type="button" disabled={loading} className="text-xs text-start mt-1" onClick={() => { reset(); setWantsToLogin(old => !old) }}>Créer mon compte</button>
+              <Button type="submit" disabled={loading}>{loading ? t('login_loading') : t('login')}</Button>
+              <button type="button" disabled={loading} className="text-xs text-start mt-1" onClick={() => { reset(); setWantsToLogin(old => !old) }}>{t('register')}</button>
             </div>
           </form>
           :
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-lg max-w-[40%] py-12 px-4 bg-white rounded-xl shadow-xl">
-            <h1 className="text-3xl font-bold mb-4 ">Créer mon compte</h1>
-            <Input label="Nom d'utilisateur" type="username" placeholder="John Doe" required {...register("name")} />
-            <Input label="Adresse email" type="email" placeholder="john.doe@example.com" required {...register("email")} />
-            <Input label="Mot de passe" type="password" placeholder="password" required {...register("password")} />
-            <Input label="Répeter le mot de passe" type="password" placeholder="password" required {...register("passwordConfirm")} />
+            <h1 className="text-3xl font-bold mb-4 ">{t('register')}</h1>
+            <Input label={t('username')} type="username" placeholder="John Doe" required {...register("name")} />
+            <Input label={t('email')} type="email" placeholder="john.doe@example.com" required {...register("email")} />
+            <Input label={t('password')} type="password" placeholder="password" required {...register("password")} />
+            <Input label={t('password_confirm')} type="password" placeholder="password" required {...register("passwordConfirm")} />
             <div className="flex flex-col">
-              <Button type="submit" disabled={loading}>{loading ? 'Création...' : 'Créer mon compte'}</Button>
-              <button type="button" disabled={loading} className="text-xs text-start mt-1" onClick={() => { reset(); setWantsToLogin(old => !old) }}>Me connecter</button>
+              <Button type="submit" disabled={loading}>{loading ? t('register_loading') : t('register')}</Button>
+              <button type="button" disabled={loading} className="text-xs text-start mt-1" onClick={() => { reset(); setWantsToLogin(old => !old) }}>{t('login')}</button>
             </div>
           </form>
         }
@@ -97,4 +99,4 @@ const LoginPage = () => {
   )
 }
 
-export default LoginPage;
+export default LoginPage
