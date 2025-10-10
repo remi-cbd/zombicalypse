@@ -1,12 +1,15 @@
 import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { useNavigate } from "react-router-dom"
 import { toast } from 'react-hot-toast';
+import Cookies from 'js-cookie';
 import Input from "../components/Input"
 import Button from "../components/Button"
 import { useUser } from "../contexts/UserContext"
 import { authenticate } from "../hooks/auth"
 
 const LoginPage = () => {
+  const navigate = useNavigate();
   const { reset, register, handleSubmit } = useForm();
   const { setUserData } = useUser();
   const [loading, setLoading] = useState(false);
@@ -14,13 +17,37 @@ const LoginPage = () => {
 
   const onSubmit = async (formData) => {
     setLoading(true);
-    const result = await authenticate(formData, wantsToLogin, setUserData);
-    console.log(result)
+    const result = await authenticate(formData, wantsToLogin);
+
     if (!result.success)
-      toast.error(result.error);
-    else
-      toast.success(wantsToLogin ? 'Login successful! 🎉' : 'User created successfully! 🎉');
+      return authFailed(result.error);
+
+    return wantsToLogin ?
+        loginSuccess(result.token, result.authUser) :
+        registerSuccess();
+  }
+
+  const authFailed = (error) => {
+    toast.error(error);
     setLoading(false);
+  }
+
+  const loginSuccess = (token, authUser) => {
+    toast.success('Login successful! 🎉');
+    Cookies.set('authToken', token, {
+      expires: 7,
+      /* secure: true, */
+      sameSite: 'strict',
+    });
+    setUserData(authUser)
+    navigate('/home')
+  }
+
+  const registerSuccess = () => {
+    toast.success('User created successfully! 🎉');
+    reset();
+    setLoading(false);
+    setWantsToLogin(true);
   }
 
   return (

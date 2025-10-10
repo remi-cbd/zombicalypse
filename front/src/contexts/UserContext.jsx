@@ -9,7 +9,7 @@ export const UserProvider = ({ children }) => {
       setUser(null)
     else
       setUser({
-        id: userData.uuid,
+        uuid: userData.uuid,
         name: userData.name,
         email: userData.email,
         avatar: userData.avatar,

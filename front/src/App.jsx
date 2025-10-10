@@ -7,15 +7,14 @@ import LoginPage from './pages/LoginPage'
 import { UserProvider, useUser } from './contexts/UserContext.jsx'
 import './index.css'
 
-const ProtectedRoute = ({ user, children }) => {
+const ProtectedRoute = ({ children }) => {
+	const user = useUser()
 	if (!user || !user.isLoggedIn)
-		return <Navigate to='/login' />
+		return <Navigate to='/login' replace />
 	return children
 }
 
 function App() {
-	const user = useUser()
-
 	if (window.innerWidth < 1024) {
 		return (
 			<div className="h-screen w-screen flex flex-col justify-center items-center bg-black text-white text-center">
@@ -33,14 +32,14 @@ function App() {
 				<main className='flex-1 max-w-6xl w-full mx-auto'>
 					<Routes>
 						<Route path="/login" element={<LoginPage />} />
-						<Route path="/" index element={
-							<ProtectedRoute user={user}>
+						<Route path="/home" index element={
+							<ProtectedRoute>
 								<HomePage />
 							</ProtectedRoute>
 						} />
 					</Routes>
 				</main>
-				<Toaster position="top-center" reverseOrder={false} />
+				<Toaster position="top-right" reverseOrder={false} />
 			</div>
 		</UserProvider>
 	)

@@ -1,5 +1,4 @@
-
-const authenticate = async (e, isLogin, setUserData) => {
+const authenticate = async (e, isLogin) => {
   const url = isLogin ?
     'http://localhost:3000/auth/login' :
     'http://localhost:3000/auth/register'
@@ -22,18 +21,12 @@ const authenticate = async (e, isLogin, setUserData) => {
       };
     }
 
-    const data = await response.json();
-    setUserData(data);
+    const data = isLogin ? await response.json() : null;
 
-    // if (isLogin)
-    //   localStorage.setItem('token', data.token);
-
-    return { success: true };
+    return { success: true, token: data.token, authUser: data.user };
   } catch (error) {
-    return {
-      success: false,
-      error: 'Network error or invalid response',
-    };
+    return { success: false, error };
+    // error: 'Network error or invalid response',
   }
 }
 

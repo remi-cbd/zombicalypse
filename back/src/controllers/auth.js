@@ -18,7 +18,15 @@ const login = async (req, res) => {
 
 	const token = jwt.sign({ uuid: user.uuid }, process.env.BACK_AUTH_SECRET)
 
-	return res.status(200).json({ uuid: user.uuid, token })
+	return res.status(200).json({
+		token,
+		user: {
+			uuid: user.uuid,
+			name: user.name,
+			email: user.email,
+			avatar: user.avatar,
+		}
+	})
 }
 
 const register = async (req, res) => {
