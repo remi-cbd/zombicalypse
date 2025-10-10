@@ -1,0 +1,15 @@
+{
+    "login": "Log in",
+    "login_loading": "Logging in...",
+    "login_success_toast": "Login successful! 🎉",
+    "login_fail_toast": "Login failed",
+    "register": "Sign up",
+    "register_loading": "Signing up...",
+    "register_success_toast": "User created successfully! 🎉",
+    "register_fail_toast": "Sign up failed",
+    "invalid_response": "Network error or invalid response",
+    "username": "Username",
+    "email": "Email address",
+    "password": "Password",
+    "password_confirm": "Confirm password"
+}

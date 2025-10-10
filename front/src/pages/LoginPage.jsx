@@ -9,10 +9,15 @@ import Button from '../components/Button'
 import { useUser } from '../contexts/UserContext'
 import { authenticate } from '../hooks/auth'
 
+const lngs = {
+  en: { nativeName: 'English' },
+  fr: { nativeName: 'Français' },
+}
+
 const LoginPage = () => {
   const navigate = useNavigate()
   const { reset, register, handleSubmit } = useForm()
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { setUserData } = useUser()
   const [loading, setLoading] = useState(false)
   const [wantsToLogin, setWantsToLogin] = useState(true)
@@ -20,18 +25,14 @@ const LoginPage = () => {
   const onSubmit = async (formData) => {
     setLoading(true)
     const result = await authenticate(formData, wantsToLogin)
-
-    if (!result.success)
-      return authFailed(result.error)
-
+    if (!result.success) {
+      toast.error(t(result.error))
+      setLoading(false)
+      return
+    }
     return wantsToLogin ?
-        loginSuccess(result.token, result.authUser) :
-        registerSuccess()
-  }
-
-  const authFailed = (error) => {
-    toast.error(t(error))
-    setLoading(false)
+      loginSuccess(result.token, result.authUser) :
+      registerSuccess()
   }
 
   const loginSuccess = (token, authUser) => {
@@ -66,6 +67,17 @@ const LoginPage = () => {
           <span className="-ml-1 rotate-8">d</span>
           <span className="-ml-1 -rotate-9">e</span>
         </h1>
+        <div>
+          {Object.keys(lngs).map((lng) => (
+            <button
+              type="submit"
+              key={lng}
+              onClick={() => i18n.changeLanguage(lng)}
+              disabled={i18n.resolvedLanguage === lng}>
+              {lngs[lng].nativeName}
+            </button>
+          ))}
+        </div>
         {wantsToLogin ?
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-lg max-w-[40%] py-12 px-4 bg-primary rounded-xl shadow-xl">
             <h1 className="text-3xl font-bold mb-4 ">{t('login')}</h1>
