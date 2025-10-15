@@ -1,4 +1,3 @@
 node_modules/
 myDataBase.json
 .env
-localDotEnv

@@ -1,5 +1,10 @@
 import { updateUserProfile } from '../services/db.js'
 
+const get = async (req, res) => {
+	console.log(`profile.js get() -> req.user = ${JSON.stringify(req.user)}`)
+	return res.status(200).json({ user: req.user })
+}
+
 const update = async (req, res) => {
 	const { name } = req.body
 	const avatar = req.file ? req.file.filename : null
@@ -15,5 +20,6 @@ const update = async (req, res) => {
 }
 
 export {
-	update
+	get,
+	update,
 }

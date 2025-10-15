@@ -2,7 +2,7 @@ import multer from 'multer'
 import path from 'path'
 
 const storage = multer.diskStorage({
-	destination: '/usr/src/app/uploads',
+	destination: process.env.BACK_NODE_ENV === 'production' ? '/usr/src/app/uploads' : '/tmp/zombicalypse/uploads',
 	filename: function (req, file, cb) {
 		const ext = path.extname(file.originalname)
 		const customName = 'avatar-' + req.user.uuid.slice(0, 4) + Date.now()

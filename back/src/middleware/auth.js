@@ -7,15 +7,20 @@ const isAuthenticated = (req, res, next) => {
 		"/auth/request-password-reset"
 	]
 
-	try {
-		if (WHITELIST.includes(req.url))
-			return next()
-
-		const decoded = jwt.verify(req.header.token, process.env.BACK_AUTH_SECRET)
-		req.user = { uuid: decoded.uuid }
-
+	console.log(`req.url = ${req.url}`)
+	if (WHITELIST.includes(req.url))
 		return next()
-	} catch(err) {
+
+	const token = req.cookies.authToken
+	if (!token)
+		return res.status(401).send()
+
+	try {
+		const decoded = jwt.verify(token, process.env.BACK_AUTH_SECRET)
+		req.user = decoded.user
+		return next()
+	} catch (error) {
+		console.log(`error: ${error}`)
 		return res.status(401).send()
 	}
 }

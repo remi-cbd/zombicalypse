@@ -16,17 +16,26 @@ const login = async (req, res) => {
 	if (!timingSafeEqual(hashedBuffer, keyBuffer))
 		return res.status(401).send()
 
-	const token = jwt.sign({ uuid: user.uuid }, process.env.BACK_AUTH_SECRET)
-
-	return res.status(200).json({
-		token,
-		user: {
-			uuid: user.uuid,
-			name: user.name,
-			email: user.email,
-			avatar: user.avatar,
-		}
-	})
+	const publicUser = {
+		uuid: user.uuid,
+		name: user.name,
+		email: user.email,
+		avatar: user.avatar,
+	}
+	const token = jwt.sign(
+		{ user: publicUser },
+		process.env.BACK_AUTH_SECRET,
+		{ expiresIn: '1d' }
+	)
+	return res
+		.status(200)
+		.cookie('authToken', token, {
+			httpOnly: true,
+			// secure: process.env.NODE_ENV === 'production',
+			sameSite: 'Lax',
+			maxAge: 24 * 60 * 60 * 1000, // 1d
+		})
+		.json({ user: publicUser })
 }
 
 const register = async (req, res) => {
@@ -44,7 +53,26 @@ const register = async (req, res) => {
 
 	db.addUser(uuid, name, email, dbPassword)
 
-	return res.status(201).send()
+	const publicUser = {
+		uuid,
+		name,
+		email,
+		avatar: null,
+	}
+	const token = jwt.sign(
+		{ user: publicUser },
+		process.env.BACK_AUTH_SECRET,
+		{ expiresIn: '1d' }
+	)
+	return res
+		.status(200)
+		.cookie('authToken', token, {
+			httpOnly: true,
+			// secure: process.env.NODE_ENV === 'production',
+			sameSite: 'Lax',
+			maxAge: 24 * 60 * 60 * 1000, // 1d
+		})
+		.json({ user: publicUser })
 }
 
 const resetPassword = async (req, res) => {

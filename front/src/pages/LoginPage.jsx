@@ -3,50 +3,47 @@ import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-hot-toast'
-import Cookies from 'js-cookie'
 import Input from '../components/Input'
 import Button from '../components/Button'
 import LanguageSwitcher from '../components/LanguageSwitcher'
-import { useUser } from '../contexts/UserContext'
-import { authenticate } from '../hooks/auth'
+import { useAuth } from '../hooks/auth'
 
 const LoginPage = () => {
   const navigate = useNavigate()
   const { reset, register, handleSubmit } = useForm()
   const { t } = useTranslation()
-  const { setUserData } = useUser()
+  const { login, createAccount } = useAuth()
   const [loading, setLoading] = useState(false)
   const [wantsToLogin, setWantsToLogin] = useState(true)
 
   const onSubmit = async (formData) => {
+    return wantsToLogin
+      ? handleLogin(formData)
+      : handleRegister(formData)
+  }
+
+  const handleLogin = async (formData) => {
     setLoading(true)
-    const result = await authenticate(formData, wantsToLogin)
-    if (!result.success) {
-      toast.error(t(result.error))
+    const result = await login(formData)
+    if (result.success) {
+      toast.success(t('login_success_toast'))
+      navigate('/')
+    } else {
+      toast.error(t('login_fail_toast'))
       setLoading(false)
-      return
     }
-    return wantsToLogin ?
-      loginSuccess(result.token, result.authUser) :
-      registerSuccess()
   }
 
-  const loginSuccess = (token, authUser) => {
-    toast.success(t('login_success_toast'))
-    Cookies.set('authToken', token, {
-      expires: 7,
-      /* secure: true, */
-      sameSite: 'strict',
-    })
-    setUserData(authUser)
-    navigate('/')
-  }
-
-  const registerSuccess = () => {
-    toast.success(t('register_success_toast'))
-    reset()
-    setLoading(false)
-    setWantsToLogin(true)
+  const handleRegister = async (formData) => {
+    setLoading(true)
+    const result = await createAccount(formData)
+    if (result.success) {
+      toast.success(t('register_success_toast'))
+      navigate('/')
+    } else {
+      toast.error(t('register_fail_toast'))
+      setLoading(false)
+    }
   }
 
   return (

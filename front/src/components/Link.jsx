@@ -9,4 +9,4 @@ const Link = ({children, ...props}) => {
   )
 }
 
-export default Link;
+export default Link

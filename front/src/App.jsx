@@ -1,16 +1,27 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast'
 import { XMarkIcon } from "@heroicons/react/24/outline"
 import Header from './components/Header'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
-import { UserProvider, useUser } from './contexts/UserContext.jsx'
+import { AuthProvider } from './contexts/AuthContext.jsx'
+import { useAuth } from './hooks/auth.js'
 import './index.css'
 
 const ProtectedRoute = ({ children }) => {
-  const user = useUser()
-  if (!user || !user.isLoggedIn)
+  const { user, isLoggedIn, loading } = useAuth()
+  console.log(`user = ${JSON.stringify(user)}`)
+  console.log(`isLoggedIn = ${JSON.stringify(isLoggedIn)}`)
+  console.log(`loading = ${JSON.stringify(loading)}`)
+
+  if (loading) {
+    return <div>The page is LOADING</div>
+  }
+
+  if (!isLoggedIn) {
     return <Navigate to='/login' replace />
+  }
+
   return children
 }
 
@@ -26,7 +37,7 @@ function App() {
   }
 
   return (
-    <UserProvider>
+    <AuthProvider>
       <div className="h-screen w-screen flex flex-col">
         <Header />
         <main className='flex-1 max-w-6xl w-full mx-auto'>
@@ -41,7 +52,7 @@ function App() {
         </main>
         <Toaster position="top-right" reverseOrder={false} />
       </div>
-    </UserProvider>
+    </AuthProvider>
   )
 }
 
