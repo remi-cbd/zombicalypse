@@ -6,18 +6,14 @@ import { toast } from 'react-hot-toast'
 import Cookies from 'js-cookie'
 import Input from '../components/Input'
 import Button from '../components/Button'
+import LanguageSwitcher from '../components/LanguageSwitcher'
 import { useUser } from '../contexts/UserContext'
 import { authenticate } from '../hooks/auth'
-
-const lngs = {
-  en: { nativeName: 'English' },
-  fr: { nativeName: 'Français' },
-}
 
 const LoginPage = () => {
   const navigate = useNavigate()
   const { reset, register, handleSubmit } = useForm()
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const { setUserData } = useUser()
   const [loading, setLoading] = useState(false)
   const [wantsToLogin, setWantsToLogin] = useState(true)
@@ -43,7 +39,7 @@ const LoginPage = () => {
       sameSite: 'strict',
     })
     setUserData(authUser)
-    navigate('/home')
+    navigate('/')
   }
 
   const registerSuccess = () => {
@@ -67,17 +63,7 @@ const LoginPage = () => {
           <span className="-ml-1 rotate-8">d</span>
           <span className="-ml-1 -rotate-9">e</span>
         </h1>
-        <div>
-          {Object.keys(lngs).map((lng) => (
-            <button
-              type="submit"
-              key={lng}
-              onClick={() => i18n.changeLanguage(lng)}
-              disabled={i18n.resolvedLanguage === lng}>
-              {lngs[lng].nativeName}
-            </button>
-          ))}
-        </div>
+        <LanguageSwitcher />
         {wantsToLogin ?
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-lg max-w-[40%] py-12 px-4 bg-primary rounded-xl shadow-xl">
             <h1 className="text-3xl font-bold mb-4 ">{t('login')}</h1>

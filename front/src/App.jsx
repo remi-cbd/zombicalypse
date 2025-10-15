@@ -32,7 +32,7 @@ function App() {
         <main className='flex-1 max-w-6xl w-full mx-auto'>
           <Routes>
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/home" index element={
+            <Route path="/" index element={
               <ProtectedRoute>
                 <HomePage />
               </ProtectedRoute>
