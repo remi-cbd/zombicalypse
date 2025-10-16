@@ -20,7 +20,7 @@ const isAuthenticated = (req, res, next) => {
 		req.user = decoded.user
 		return next()
 	} catch (error) {
-		console.log(`error: ${error}`)
+		console.error('Error verifying token:', error)
 		return res.status(401).send()
 	}
 }

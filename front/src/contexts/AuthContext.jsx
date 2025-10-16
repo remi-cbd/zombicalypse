@@ -12,9 +12,6 @@ export const AuthProvider = ({ children }) => {
         credentials: 'include',
       })
 
-      console.log(`response.ok = ${JSON.stringify(response.ok)}`)
-      console.log(`response.status = ${JSON.stringify(response.status)}`)
-
       if (response.ok) {
         const data = await response.json()
         console.log(`data.user = ${JSON.stringify(data.user)}`)

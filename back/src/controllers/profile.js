@@ -1,7 +1,6 @@
 import { updateUserProfile } from '../services/db.js'
 
 const get = async (req, res) => {
-	console.log(`profile.js get() -> req.user = ${JSON.stringify(req.user)}`)
 	return res.status(200).json({ user: req.user })
 }
 

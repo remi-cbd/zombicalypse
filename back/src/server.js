@@ -1,6 +1,5 @@
 import express from 'express'
 // import expressWs from 'express-ws'
-import { configDotenv } from 'dotenv'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
@@ -9,8 +8,6 @@ import errorHandler from './middleware/errorHandler.js'
 import auth from './routes/auth.js'
 import profile from './routes/profile.js'
 // import * as websocket from './services/websocket.js'
-
-configDotenv()
 
 const hostname = process.env.BACK_HOST
 const port = process.env.BACK_PORT

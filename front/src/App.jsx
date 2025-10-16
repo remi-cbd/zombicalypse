@@ -9,10 +9,7 @@ import { useAuth } from './hooks/auth.js'
 import './index.css'
 
 const ProtectedRoute = ({ children }) => {
-  const { user, isLoggedIn, loading } = useAuth()
-  console.log(`user = ${JSON.stringify(user)}`)
-  console.log(`isLoggedIn = ${JSON.stringify(isLoggedIn)}`)
-  console.log(`loading = ${JSON.stringify(loading)}`)
+  const { isLoggedIn, loading } = useAuth()
 
   if (loading) {
     return <div>The page is LOADING</div>

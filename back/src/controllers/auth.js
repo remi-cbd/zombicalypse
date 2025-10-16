@@ -109,8 +109,8 @@ const resetPassword = async (req, res) => {
 			return res.status(500).json({ error: 'Failed to send email' })
 		}
 		return res.status(200).send()
-	} catch (err) {
-		console.error('Error sending email:', err)
+	} catch (error) {
+		console.error('Error sending email:', error)
 		return res.status(500).send()
 	}
 }
