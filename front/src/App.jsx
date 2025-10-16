@@ -11,13 +11,11 @@ import './index.css'
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn, loading } = useAuth()
 
-  if (loading) {
+  if (loading)
     return <div>The page is LOADING</div>
-  }
 
-  if (!isLoggedIn) {
+  if (!isLoggedIn)
     return <Navigate to='/login' replace />
-  }
 
   return children
 }

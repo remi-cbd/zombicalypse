@@ -11,6 +11,11 @@ import profile from './routes/profile.js'
 
 const hostname = process.env.BACK_HOST
 const port = process.env.BACK_PORT
+const allowedOrigins = [
+    'http://localhost:5173',
+    'http://localhost:80',
+    'http://localhost',
+]
 
 // Server
 const app = express()
@@ -20,7 +25,15 @@ const app = express()
 
 // Middleware
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: function (origin, callback) {
+        if (!origin)
+            return callback(null, true); // allow non-browser requests like curl
+        console.log(`origin = ${origin}`)
+        if (allowedOrigins.includes(origin))
+            callback(null, true);
+        else
+            callback(new Error('Not allowed by CORS'));
+    },
     credentials: true,
 }))
 app.use(bodyParser.json())
